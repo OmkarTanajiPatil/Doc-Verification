@@ -7,7 +7,7 @@ import torchvision.models as models
 import torch.nn as nn
 import torch.optim as optim
 import shutil
-from PIL import Image  # Fixed missing import
+from PIL import Image  
 
 def get_mean_and_std(loader):
     mean = 0
@@ -176,4 +176,4 @@ image_transform = transforms.Compose([
     transforms.Normalize(mean.tolist(), std.tolist())
 ])
 
-classify(torch.load('best_model.pth'), image_transform, "./Dataset/Aadhar_card/adhar1.png", classes)
+classify(torch.load('best_model.pth'), image_transform, "./Dataset/Aadhar_card/my small aadhar.jpg", classes)
