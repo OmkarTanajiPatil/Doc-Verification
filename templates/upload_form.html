@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Aadhar & PAN Card</title>
+    <link rel="stylesheet" href="styles2.css"> <!-- Linking CSS -->
+</head>
+<body>
+
+    <div class="container">
+        <h2>Upload Your Documents</h2>
+
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <!-- Name Input -->
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <!-- Aadhar Card Upload -->
+            <div class="form-group">
+                <label for="aadhar">Upload Aadhar Card:</label>
+                <input type="file" id="aadhar" name="aadhar" accept=".jpg, .jpeg, .png, .pdf" required>
+            </div>
+
+            <!-- PAN Card Upload -->
+            <div class="form-group">
+                <label for="pan">Upload PAN Card:</label>
+                <input type="file" id="pan" name="pan" accept=".jpg, .jpeg, .png, .pdf" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+</body>
+</html>
