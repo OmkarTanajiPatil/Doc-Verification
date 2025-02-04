@@ -4,36 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Aadhar & PAN Card</title>
-    <link rel="stylesheet" href="styles2.css"> <!-- Linking CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
 </head>
 <body>
-
-    <div class="container">
+    <div class="form-container">
         <h2>Upload Your Documents</h2>
-
+        
+        <!-- Show error message if any -->
+        {% if error %}
+        <div class="error-message">
+            <p style="color: red;">{{ error }}</p>
+        </div>
+        {% endif %}
+        
         <form action="/upload" method="POST" enctype="multipart/form-data">
-            <!-- Name Input -->
             <div class="form-group">
                 <label for="name">Full Name:</label>
                 <input type="text" id="name" name="name" required>
             </div>
-            
-            <!-- Aadhar Card Upload -->
             <div class="form-group">
                 <label for="aadhar">Upload Aadhar Card:</label>
-                <input type="file" id="aadhar" name="aadhar" accept=".jpg, .jpeg, .png, .pdf" required>
+                <input type="file" id="aadhar" name="aadhar" accept=".jpg, .jpeg, .png, .pdf">
             </div>
-
-            <!-- PAN Card Upload -->
             <div class="form-group">
                 <label for="pan">Upload PAN Card:</label>
-                <input type="file" id="pan" name="pan" accept=".jpg, .jpeg, .png, .pdf" required>
+                <input type="file" id="pan" name="pan" accept=".jpg, .jpeg, .png, .pdf">
             </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="submit-btn">Submit</button>
+            <button type="submit">Submit</button>
         </form>
     </div>
-
 </body>
 </html>
