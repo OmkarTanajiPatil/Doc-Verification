@@ -21,7 +21,7 @@ image_transform = transforms.Compose([
 def set_device():
     return torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-def classify(model, image_transform, image_path, classes, threshold=0.8):
+def classify(model, image_transform, image_path, classes, threshold=0.88):
     model.eval()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)

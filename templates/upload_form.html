@@ -5,33 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Aadhar & PAN Card</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="form-container">
         <h2>Upload Your Documents</h2>
-        
-        <!-- Show error message if any -->
-        {% if error %}
-        <div class="error-message">
-            <p style="color: red;">{{ error }}</p>
-        </div>
-        {% endif %}
-        
-        <form action="/upload" method="POST" enctype="multipart/form-data">
+        <form action="/upload_form" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Full Name:</label>
                 <input type="text" id="name" name="name" required>
             </div>
+
+            <!-- Aadhar Upload -->
             <div class="form-group">
                 <label for="aadhar">Upload Aadhar Card:</label>
-                <input type="file" id="aadhar" name="aadhar" accept=".jpg, .jpeg, .png, .pdf">
+                <input type="file" id="aadhar" name="aadhar" accept=".jpg, .jpeg, .png, .pdf" required>
+                <p id="aadhar-status"></p> <!-- Status Message -->
             </div>
+
+            <!-- PAN Upload -->
             <div class="form-group">
                 <label for="pan">Upload PAN Card:</label>
-                <input type="file" id="pan" name="pan" accept=".jpg, .jpeg, .png, .pdf">
+                <input type="file" id="pan" name="pan" accept=".jpg, .jpeg, .png, .pdf" required>
+                <p id="pan-status"></p> <!-- Status Message -->
             </div>
-            <button type="submit">Submit</button>
+
+            <button type="submit" id="submit-btn">Submit</button>
         </form>
     </div>
+
+    <script>
+        $(document).ready(function(){
+            function validateFile(inputId, fileType) {
+                let fileInput = document.getElementById(inputId);
+                let file = fileInput.files[0];
+                let statusElement = document.getElementById(inputId + "-status");
+
+                if (file) {
+                    let formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("file_type", fileType);
+
+                    $.ajax({
+                        url: "/validate_document",
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.valid) {
+                                statusElement.innerHTML = "✔ " + response.filename + " is valid.";
+                                statusElement.style.color = "green";
+                            } else {
+                                statusElement.innerHTML = "✖ " + response.error;
+                                statusElement.style.color = "red";
+                                fileInput.value = ""; // Reset input
+                            }
+                            toggleSubmitButton();
+                        },
+                        error: function() {
+                            statusElement.innerHTML = "✖ Error validating file.";
+                            statusElement.style.color = "red";
+                            fileInput.value = "";
+                            toggleSubmitButton();
+                        }
+                    });
+                }
+            }
+
+            function toggleSubmitButton() {
+                let aadharStatus = document.getElementById("aadhar-status").innerHTML.includes("✔");
+                let panStatus = document.getElementById("pan-status").innerHTML.includes("✔");
+                document.getElementById("submit-btn").disabled = !(aadharStatus && panStatus);
+            }
+
+            $("#aadhar").change(function() { validateFile("aadhar", "Aadhar"); });
+            $("#pan").change(function() { validateFile("pan", "PAN"); });
+        });
+    </script>
 </body>
 </html>
